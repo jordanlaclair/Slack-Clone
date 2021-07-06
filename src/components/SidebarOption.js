@@ -1,8 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { db } from "../firebase";
+import { useSelector, useDispatch } from "react-redux";
+import * as action from "../store/actions/index";
+
 const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
-	const selectChannel = () => {};
+	const dispatch = useDispatch();
+	const selectChannel = () => {
+		if (id) {
+			dispatch(action.enterRoom(id));
+		}
+	};
 
 	const addChannel = () => {
 		const channelName = prompt("Please enter the channel name");

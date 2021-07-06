@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import Chat from "./components/Chat";
 function App() {
 	return (
 		<div className="app">
@@ -11,7 +12,7 @@ function App() {
 				<AppBody>
 					<Sidebar />
 					<Switch>
-						<Route exact path="/" />
+						<Route exact path="/" component={Chat} />
 					</Switch>
 				</AppBody>
 			</Router>
