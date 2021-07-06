@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
 import { db } from "../firebase";
 const ChatInput = ({ channelName, channelId }) => {
 	const [input, setInput] = useState("");
+
 	const sendMessage = (e) => {
 		//prevent refresh
 		e.preventDefault();
@@ -24,7 +25,7 @@ const ChatInput = ({ channelName, channelId }) => {
 	};
 
 	return (
-		<ChatInputContainer>
+		<ChatInputContainer key={channelName}>
 			<form action="">
 				<input
 					value={input}
@@ -50,6 +51,15 @@ const ChatInput = ({ channelName, channelId }) => {
 
 export default ChatInput;
 
+const fadeIn = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
+
 const ChatInputContainer = styled.div`
 	border-radius: 20px;
 	> form {
@@ -65,6 +75,20 @@ const ChatInputContainer = styled.div`
 		border: 1px solid gray;
 		border-radius: 20px;
 		padding: 19px;
+		animation: ${fadeIn} 1s 1;
+		::-webkit-input-placeholder {
+			transition: all 1s ease-out;
+		}
+		::-moz-placeholder {
+			transition: all 1s ease-out;
+		}
+		:-ms-input-placeholder {
+			transition: all 1s ease-out;
+		}
+
+		:focus::-webkit-input-placeholder {
+			color: transparent;
+		}
 	}
 
 	> form > button {

@@ -9,7 +9,7 @@ import { db } from "../firebase";
 const Chat = () => {
 	const roomId = useSelector((state) => state.rooms.roomId);
 	const [roomDetails] = useDocument(
-		roomId && db.collection("rooms".doc(roomId))
+		roomId && db.collection("rooms").doc(roomId)
 	);
 	const [roomMessages] = useCollection(
 		roomId &&
