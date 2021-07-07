@@ -4,13 +4,21 @@ import { Avatar } from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import SearchIcon from "@material-ui/icons/Search";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 const Header = () => {
+	const [user, loading] = useAuthState(auth);
+
 	return (
 		<HeaderContainer>
 			<HeaderLeft>
 				<HeaderAvatar
-				//TODO: add on click
+					onClick={() => {
+						auth.signOut();
+					}}
+					src={user?.photoURL}
+					alt={user?.displayName}
 				/>
 				<AccessTimeIcon />
 			</HeaderLeft>
@@ -31,20 +39,41 @@ export default Header;
 
 const HeaderSearch = styled.div`
 	flex: 0.4;
+	justify-content: flex-start;
+
 	opacity: 1;
 	border-radius: 6px;
 	background-color: #421f44;
 	display: flex;
-	padding: 0 50px;
+	padding: 0 15px;
 	color: gray;
 	border: 1px gray solid;
 	> input {
 		background-color: transparent;
 		border: none;
-		text-align: center;
+		text-align: start;
 		min-width: 30vw;
 		outline: none;
 		color: white;
+		font-family: inherit;
+
+		::placeholder {
+			color: white;
+		}
+
+		::-webkit-input-placeholder {
+			transition: all 1s ease-out;
+		}
+		::-moz-placeholder {
+			transition: all 1s ease-out;
+		}
+		:-ms-input-placeholder {
+			transition: all 1s ease-out;
+		}
+
+		:focus::-webkit-input-placeholder {
+			color: transparent;
+		}
 	}
 `;
 const HeaderContainer = styled.div`
@@ -78,7 +107,7 @@ const HeaderAvatar = styled(Avatar)`
 `;
 
 const HeaderRight = styled.div`
-	flex: 0 0.3;
+	flex: 0.3;
 	display: flex;
 	align-items: flex-end;
 	> .MuiSvgIcon-root {

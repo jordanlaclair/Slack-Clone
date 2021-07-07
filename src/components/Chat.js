@@ -6,10 +6,14 @@ import ChatInput from "./ChatInput.js";
 import Message from "./Message";
 import { useSelector } from "react-redux";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 const Chat = () => {
 	const chatRef = useRef(null);
 	const roomId = useSelector((state) => state.rooms.roomId);
+	const [user] = useAuthState(auth);
+
 	const [roomDetails] = useDocument(
 		roomId && db.collection("rooms").doc(roomId)
 	);
@@ -67,9 +71,9 @@ const Chat = () => {
 						channelName={roomDetails?.data().name}
 					/>
 				</>
-			) : (
+			) : user && loading ? null : (
 				<div>
-					<h4>Pick a room!</h4>
+					<h3>Pick a room!</h3>
 				</div>
 			)}
 		</ChatContainer>

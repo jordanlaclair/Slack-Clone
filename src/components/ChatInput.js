@@ -2,9 +2,11 @@ import React, { useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const [input, setInput] = useState("");
+	const [user, loading] = useAuthState(auth);
 
 	const sendMessage = (e) => {
 		//prevent refresh
@@ -18,9 +20,8 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
 		db.collection("rooms").doc(channelId).collection("messages").add({
 			message: input,
 			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-			user: "Jordan Molina",
-			userImage:
-				"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+			user: user?.displayName,
+			userImage: user?.photoURL,
 		});
 
 		setInput("");
@@ -82,6 +83,8 @@ const ChatInputContainer = styled.div`
 		border-radius: 20px;
 		padding: 19px;
 		animation: ${fadeIn} 1s 1;
+		font-family: inherit;
+		font-weight: bold;
 		::-webkit-input-placeholder {
 			transition: all 1s ease-out;
 		}
