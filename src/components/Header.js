@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { Avatar } from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
@@ -6,37 +6,103 @@ import SearchIcon from "@material-ui/icons/Search";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import { purple, green } from "@material-ui/core/colors";
 import { IconButton } from "@material-ui/core";
+import { lightTheme, darkTheme } from "./styles/Themes";
+import { GlobalStyles } from "./styles/globalStyles";
+import { ThemeProvider } from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import { useSelector, useDispatch } from "react-redux";
+import * as action from "../store/actions/index";
+import Switch from "@material-ui/core/Switch";
 
 const Header = () => {
 	const [user, loading] = useAuthState(auth);
 
+	const [sliderState, setSliderState] = useState(false);
+	const [input, setInput] = useState("");
+	const theme = useSelector((state) => state.rooms.theme);
+	const dispatch = useDispatch();
+
+	const SlackSwitch = withStyles({
+		switchBase: {
+			color: purple[300],
+
+			"&$checked": {
+				color: purple[500],
+			},
+			"&$checked + $track": {
+				backgroundColor: purple[500],
+			},
+		},
+		checked: {},
+		track: { backgroundColor: purple[50] },
+	})(Switch);
+
+	const themeToggler = (e) => {
+		dispatch(action.toggleTheme());
+
+		setSliderState((prevState) => {
+			return !prevState;
+		});
+	};
+
+	const clear = (e) => {
+		if (e.which === 13) {
+			e.preventDefault();
+			setInput("");
+		}
+	};
+
+	useEffect(() => {
+		console.log({ theme });
+	}, [theme]);
+
 	return (
-		<HeaderContainer>
-			<HeaderLeft>
-				<HeaderAvatar
-					onClick={() => {
-						auth.signOut();
-					}}
-					src={user?.photoURL}
-					alt={user?.displayName}
-				/>
-				<AccessTimeIcon />
-			</HeaderLeft>
+		<ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+			<GlobalStyles />
+			<HeaderContainer>
+				<HeaderLeft>
+					<HeaderAvatar
+						onClick={() => {
+							auth.signOut();
+						}}
+						src={user?.photoURL}
+						alt={user?.displayName}
+					/>
+					<AccessTimeIcon />
+				</HeaderLeft>
 
-			<HeaderSearch>
-				<IconButton color="inherit">
-					<SearchIcon />
-				</IconButton>
-				<input type="text" placeholder="Search" />
-			</HeaderSearch>
+				<HeaderSearch>
+					<IconButton color="inherit">
+						<SearchIcon />
+					</IconButton>
+					<form action="">
+						<input
+							onKeyPress={clear}
+							type="text"
+							value={input}
+							onChange={(e) => {
+								setInput(e.target.value);
+							}}
+							placeholder="Search"
+						/>
+					</form>
+				</HeaderSearch>
 
-			<HeaderRight>
-				<IconButton color="inherit">
-					<HelpOutlineIcon />
-				</IconButton>
-			</HeaderRight>
-		</HeaderContainer>
+				<HeaderRight>
+					<SlackSwitch
+						checked={sliderState}
+						onChange={themeToggler}
+						name="checkedA"
+						inputProps={{ "aria-label": "secondary checkbox" }}
+					/>
+					<IconButton color="inherit">
+						<HelpOutlineIcon />
+					</IconButton>
+				</HeaderRight>
+			</HeaderContainer>
+		</ThemeProvider>
 	);
 };
 
@@ -54,7 +120,13 @@ const HeaderSearch = styled.div`
 	color: white;
 	border: 1px whitesmoke solid;
 
-	> input {
+	> form {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	form > input {
 		background-color: transparent;
 		border: none;
 		text-align: start;

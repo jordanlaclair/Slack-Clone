@@ -6,3 +6,9 @@ export const enterRoom = (id) => {
 		value: id,
 	};
 };
+
+export const toggleTheme = () => {
+	return {
+		type: actionTypes.TOGGLE_THEME,
+	};
+};

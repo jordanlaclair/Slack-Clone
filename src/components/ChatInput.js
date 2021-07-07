@@ -4,9 +4,17 @@ import { Button } from "@material-ui/core";
 import firebase from "firebase";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./styles/Themes";
+import { useDispatch, useSelector } from "react-redux";
+import * as action from "../store/actions/index";
+
 const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const [input, setInput] = useState("");
 	const [user, loading] = useAuthState(auth);
+	const theme = useSelector((store) => {
+		return store.rooms.theme;
+	});
 
 	const sendMessage = (e) => {
 		//prevent refresh
@@ -32,27 +40,29 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
 	};
 
 	return (
-		<ChatInputContainer key={channelName}>
-			<form action="">
-				<input
-					value={input}
-					onChange={(e) => {
-						setInput(e.target.value);
-					}}
-					type="text"
-					placeholder={`Message #${channelName}`}
-				/>
-				<Button
-					hidden
-					type="submit"
-					onClick={(e) => {
-						sendMessage(e);
-					}}
-				>
-					SEND
-				</Button>
-			</form>
-		</ChatInputContainer>
+		<ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+			<ChatInputContainer key={channelName}>
+				<form action="">
+					<input
+						value={input}
+						onChange={(e) => {
+							setInput(e.target.value);
+						}}
+						type="text"
+						placeholder={`Message #${channelName}`}
+					/>
+					<Button
+						hidden
+						type="submit"
+						onClick={(e) => {
+							sendMessage(e);
+						}}
+					>
+						SEND
+					</Button>
+				</form>
+			</ChatInputContainer>
+		</ThemeProvider>
 	);
 };
 
@@ -78,6 +88,8 @@ const ChatInputContainer = styled.div`
 		outline: none;
 		position: fixed;
 		width: 60%;
+		color: ${(props) => props.theme.text};
+		background: ${(props) => props.theme.secondary};
 		bottom: 29px;
 		border: 1px solid gray;
 		border-radius: 20px;
@@ -86,12 +98,15 @@ const ChatInputContainer = styled.div`
 		font-family: inherit;
 		font-weight: bold;
 		::-webkit-input-placeholder {
+			color: ${(props) => props.theme.text};
 			transition: all 1s ease-out;
 		}
 		::-moz-placeholder {
+			color: ${(props) => props.theme.text};
 			transition: all 1s ease-out;
 		}
 		:-ms-input-placeholder {
+			color: ${(props) => props.theme.text};
 			transition: all 1s ease-out;
 		}
 
