@@ -187,7 +187,7 @@ const HeaderAvatar = styled(Avatar)`
 const HeaderRight = styled.div`
 	flex: 0.3;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: flex-end !important;
 	> .MuiSvgIcon-root {
 		align-self: flex-end;
