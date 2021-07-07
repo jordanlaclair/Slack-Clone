@@ -96,7 +96,7 @@ const SidebarInfo = styled.div`
 	}
 	> h3 {
 		display: flex;
-		font-size: 13px;
+		font-size: 15px;
 		font-weight: 400;
 		align-items: center;
 	}

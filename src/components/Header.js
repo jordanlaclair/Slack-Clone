@@ -6,6 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import { IconButton } from "@material-ui/core";
 
 const Header = () => {
 	const [user, loading] = useAuthState(auth);
@@ -24,12 +25,16 @@ const Header = () => {
 			</HeaderLeft>
 
 			<HeaderSearch>
-				<SearchIcon />
+				<IconButton color="inherit">
+					<SearchIcon />
+				</IconButton>
 				<input type="text" placeholder="Search" />
 			</HeaderSearch>
 
 			<HeaderRight>
-				<HelpOutlineIcon />
+				<IconButton color="inherit">
+					<HelpOutlineIcon />
+				</IconButton>
 			</HeaderRight>
 		</HeaderContainer>
 	);
@@ -46,8 +51,9 @@ const HeaderSearch = styled.div`
 	background-color: #421f44;
 	display: flex;
 	padding: 0 15px;
-	color: gray;
-	border: 1px gray solid;
+	color: white;
+	border: 1px whitesmoke solid;
+
 	> input {
 		background-color: transparent;
 		border: none;
@@ -110,7 +116,9 @@ const HeaderRight = styled.div`
 	flex: 0.3;
 	display: flex;
 	align-items: flex-end;
+	justify-content: flex-end !important;
 	> .MuiSvgIcon-root {
+		align-self: flex-end;
 		margin-left: auto;
 		margin-right: 20px;
 	}
