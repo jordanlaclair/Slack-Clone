@@ -1,17 +1,19 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import ChatInput from "./ChatInput.js";
+import Message from "./Message";
 import { useSelector } from "react-redux";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 const Chat = () => {
+	const chatRef = useRef(null);
 	const roomId = useSelector((state) => state.rooms.roomId);
 	const [roomDetails] = useDocument(
 		roomId && db.collection("rooms").doc(roomId)
 	);
-	const [roomMessages] = useCollection(
+	const [roomMessages, loading] = useCollection(
 		roomId &&
 			db
 				.collection("rooms")
@@ -19,39 +21,81 @@ const Chat = () => {
 				.collection("messages")
 				.orderBy("timestamp", "asc")
 	);
-	console.log(roomId);
+	useEffect(() => {
+		chatRef?.current?.scrollIntoView({
+			behavior: "smooth",
+		});
+	}, [roomId, loading]);
 	return (
 		<ChatContainer>
-			<>
-				<Header>
-					<HeaderLeft>
-						<h4>
-							<strong>#Room-name</strong>
-						</h4>
-						<StarBorderOutlinedIcon />
-					</HeaderLeft>
+			{roomDetails && roomMessages ? (
+				<>
+					<Header>
+						<HeaderLeft key={roomDetails?.data().name}>
+							<h4>
+								<strong>#{roomDetails?.data().name}</strong>
+							</h4>
+							<StarBorderOutlinedIcon />
+						</HeaderLeft>
 
-					<HeaderRight>
-						<p>
-							<InfoOutlinedIcon /> Details
-						</p>
-					</HeaderRight>
-				</Header>
-				<ChatMessages></ChatMessages>
+						<HeaderRight>
+							<p>
+								<InfoOutlinedIcon /> Details
+							</p>
+						</HeaderRight>
+					</Header>
+					<ChatMessages>
+						{roomMessages?.docs.map((doc) => {
+							const { message, timestamp, user, userImage } = doc.data();
 
-				<ChatInput channelId={roomId} channelName={roomDetails?.data().name} />
-			</>
+							return (
+								<Message
+									key={doc.id}
+									message={message}
+									timestamp={timestamp}
+									user={user}
+									userImage={userImage}
+								/>
+							);
+						})}
+						<ChatBottom ref={chatRef} />
+					</ChatMessages>
+
+					<ChatInput
+						chatRef={chatRef}
+						channelId={roomId}
+						channelName={roomDetails?.data().name}
+					/>
+				</>
+			) : (
+				<div>
+					<h4>Pick a room!</h4>
+				</div>
+			)}
 		</ChatContainer>
 	);
 };
 
 export default Chat;
 
+const fadeIn = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
+
 const ChatContainer = styled.div`
 	flex: 0.7;
 	margin-top: 60px;
 	flex-grow: 1;
 	overflow-y: scroll;
+`;
+
+const ChatBottom = styled.div`
+	padding-bottom: 200px;
 `;
 
 const Header = styled.div`
@@ -77,6 +121,7 @@ const HeaderRight = styled.div`
 const HeaderLeft = styled.div`
 	display: flex;
 	align-items: center;
+	animation: ${fadeIn} 1s 1;
 
 	> h4 {
 		display: flex;

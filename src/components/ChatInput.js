@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
 import { db } from "../firebase";
-const ChatInput = ({ channelName, channelId }) => {
+const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const [input, setInput] = useState("");
 
 	const sendMessage = (e) => {
@@ -19,9 +19,15 @@ const ChatInput = ({ channelName, channelId }) => {
 			message: input,
 			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
 			user: "Jordan Molina",
+			userImage:
+				"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
 		});
 
 		setInput("");
+
+		chatRef.current.scrollIntoView({
+			behavior: "smooth",
+		});
 	};
 
 	return (
