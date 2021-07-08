@@ -8,13 +8,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { purple, green } from "@material-ui/core/colors";
 import { IconButton } from "@material-ui/core";
-import { lightTheme, darkTheme } from "./styles/Themes";
-import { GlobalStyles } from "./styles/globalStyles";
+import { lightTheme, darkTheme } from "./assets/styles/Themes";
+import { GlobalStyles } from "./assets/styles/globalStyles";
 import { ThemeProvider } from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../store/actions/index";
 import Switch from "@material-ui/core/Switch";
+import device from "./assets/styles/devices";
 
 const Header = () => {
 	const [user, loading] = useAuthState(auth);
@@ -97,7 +98,7 @@ const Header = () => {
 						name="checkedA"
 						inputProps={{ "aria-label": "secondary checkbox" }}
 					/>
-					<IconButton color="inherit">
+					<IconButton id="help_icon" color="inherit">
 						<HelpOutlineIcon />
 					</IconButton>
 				</HeaderRight>
@@ -130,7 +131,7 @@ const HeaderSearch = styled.div`
 		background-color: transparent;
 		border: none;
 		text-align: start;
-		min-width: 30vw;
+		min-width: 10vw;
 		outline: none;
 		color: white;
 		font-family: inherit;
@@ -174,6 +175,9 @@ const HeaderLeft = styled.div`
 	> .MuiSvgIcon-root {
 		margin-left: auto;
 		margin-right: 30px;
+		@media ${device.mobileXL} {
+			display: none;
+		}
 	}
 `;
 
@@ -189,9 +193,15 @@ const HeaderRight = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end !important;
-	> .MuiSvgIcon-root {
+	> .MuiSvgIcon {
 		align-self: flex-end;
 		margin-left: auto;
 		margin-right: 20px;
+	}
+
+	#help_icon {
+		@media ${device.mobileXL} {
+			display: none;
+		}
 	}
 `;

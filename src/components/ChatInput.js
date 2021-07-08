@@ -5,9 +5,10 @@ import firebase from "firebase";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "./styles/Themes";
+import { lightTheme, darkTheme } from "./assets/styles/Themes";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions/index";
+import device from "./assets/styles/devices";
 
 const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const [input, setInput] = useState("");
@@ -86,10 +87,12 @@ const ChatInputContainer = styled.div`
 	}
 	> form > input {
 		outline: none;
+
 		position: fixed;
 		width: 60%;
 		color: ${(props) => props.theme.text};
 		background: ${(props) => props.theme.secondary};
+
 		bottom: 29px;
 		border: 1px solid gray;
 		border-radius: 20px;
@@ -97,6 +100,11 @@ const ChatInputContainer = styled.div`
 		animation: ${fadeIn} 1s 1;
 		font-family: inherit;
 		font-weight: bold;
+
+		@media ${device.mobileXL} {
+			width: 30%;
+		}
+
 		::-webkit-input-placeholder {
 			color: ${(props) => props.theme.text};
 			transition: all 1s ease-out;

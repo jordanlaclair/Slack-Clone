@@ -14,9 +14,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, db } from "../firebase";
-
 import SidebarOption from "./SidebarOption";
 import { useAuthState } from "react-firebase-hooks/auth";
+import device from "./assets/styles/devices";
 
 const Sidebar = () => {
 	const [channels, loading, error] = useCollection(db.collection("rooms"));
@@ -63,7 +63,10 @@ const SidebarContainer = styled.div`
 	color: white;
 	flex: 0.3;
 	margin-top: 60px;
-	max-width: 260px;
+	@media ${device.mobileXL} {
+		min-width: 50%;
+	}
+
 	border-top: 1px solid rgb(148, 148, 148);
 
 	> hr {
@@ -71,6 +74,7 @@ const SidebarContainer = styled.div`
 		margin-bottom: 10px;
 		border: 1px solid rgb(148, 148, 148);
 	}
+	overflow-y: auto;
 `;
 
 const SidebarHeader = styled.div`
