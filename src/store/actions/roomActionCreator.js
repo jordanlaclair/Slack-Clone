@@ -12,3 +12,9 @@ export const toggleTheme = () => {
 		type: actionTypes.TOGGLE_THEME,
 	};
 };
+
+export const toggleSideBar = () => {
+	return {
+		type: actionTypes.TOGGLE_SIDEBAR,
+	};
+};

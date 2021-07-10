@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import CreateIcon from "@material-ui/icons/Create";
@@ -17,13 +17,21 @@ import { auth, db } from "../firebase";
 import SidebarOption from "./SidebarOption";
 import { useAuthState } from "react-firebase-hooks/auth";
 import device from "./assets/styles/devices";
-
-const Sidebar = () => {
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import { IconButton } from "@material-ui/core";
+import devices from "./assets/styles/devices";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { useDispatch, useSelector } from "react-redux";
+import * as action from "../store/actions/index";
+function Sidebar() {
 	const [channels, loading, error] = useCollection(db.collection("rooms"));
 	const [user] = useAuthState(auth);
-
-	return (
-		<SidebarContainer>
+	const sideBarIsOpen = useSelector((state) => {
+		return state.app.sideBar;
+	});
+	const dispatch = useDispatch();
+	return sideBarIsOpen ? (
+		<SidebarContainerOpen>
 			<SidebarHeader>
 				<SidebarInfo>
 					<h2>Jordan's HQ</h2>
@@ -32,7 +40,13 @@ const Sidebar = () => {
 						{user?.displayName}
 					</h3>
 				</SidebarInfo>
-				<CreateIcon />
+				<IconButton
+					onClick={() => {
+						dispatch(action.toggleSideBar());
+					}}
+				>
+					<NavigateBeforeIcon />
+				</IconButton>
 			</SidebarHeader>
 
 			<SidebarOption Icon={InsertCommentIcon} title="Threads" />
@@ -52,14 +66,49 @@ const Sidebar = () => {
 					<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
 				);
 			})}
-		</SidebarContainer>
+		</SidebarContainerOpen>
+	) : (
+		<SidebarContainerClosed
+			onClick={() => {
+				dispatch(action.toggleSideBar());
+			}}
+		>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+		</SidebarContainerClosed>
 	);
-};
+}
 
 export default Sidebar;
 
-const SidebarContainer = styled.div`
+const SidebarContainerClosed = styled.div`
 	background-color: var(--slack-color);
+	cursor: pointer;
+	margin-top: 80px;
+	transition: all 1s ease-in;
+	display: block;
+	width: 25px;
+	height: 15vh;
+	border-bottom-right-radius: 999px;
+	border-top-right-radius: 999px;
+	border: 1px solid gray;
+	border-left: 0px;
+	display: flex;
+
+	> div {
+		margin: 1.5px;
+		position: relative;
+		top: 18%;
+		left: 5px;
+		background-color: whitesmoke;
+		width: 2px;
+		height: 60%;
+	}
+`;
+
+const SidebarContainerOpen = styled.div`
+	background-color: var(--slack-color);
+	transition: all 1s ease-in;
 	color: white;
 	flex: 0.3;
 	margin-top: 60px;
@@ -88,6 +137,7 @@ const SidebarHeader = styled.div`
 		font-size: 17px;
 		background-color: white;
 		border-radius: 50%;
+		cursor: pointer;
 	}
 `;
 

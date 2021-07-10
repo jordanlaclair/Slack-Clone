@@ -176,6 +176,7 @@ const ChatContainer = styled.div`
 	margin-top: 60px;
 	flex-grow: 1;
 	overflow-y: auto;
+	overflow-x: hidden;
 `;
 
 const ChatBottom = styled.div`

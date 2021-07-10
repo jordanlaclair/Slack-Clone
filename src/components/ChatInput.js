@@ -14,7 +14,7 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const [input, setInput] = useState("");
 	const [user, loading] = useAuthState(auth);
 	const theme = useSelector((store) => {
-		return store.rooms.theme;
+		return store.app.theme;
 	});
 
 	const sendMessage = (e) => {

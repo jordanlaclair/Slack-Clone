@@ -19,12 +19,10 @@ import device from "./assets/styles/devices";
 
 const Header = () => {
 	const [user, loading] = useAuthState(auth);
-
 	const [sliderState, setSliderState] = useState(false);
 	const [input, setInput] = useState("");
-	const theme = useSelector((state) => state.rooms.theme);
+	const theme = useSelector((state) => state.app.theme);
 	const dispatch = useDispatch();
-
 	const SlackSwitch = withStyles({
 		switchBase: {
 			color: purple[300],

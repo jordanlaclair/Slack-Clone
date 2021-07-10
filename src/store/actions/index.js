@@ -1,1 +1,1 @@
-export { enterRoom, toggleTheme } from "./roomActionCreator";
+export { enterRoom, toggleTheme, toggleSideBar } from "./roomActionCreator";

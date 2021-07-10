@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Message = ({ timestamp, message, userImage, user }) => {
 	return (
@@ -17,9 +17,18 @@ const Message = ({ timestamp, message, userImage, user }) => {
 
 export default Message;
 
+const fadeIn = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
+
 const MessageContainer = styled.div`
 	display: flex;
-
+	animation: ${fadeIn} 1s ease-in-out 1;
 	align-items: center;
 	padding: 19px;
 	> img {
