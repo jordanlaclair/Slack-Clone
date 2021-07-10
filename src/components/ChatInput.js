@@ -16,6 +16,9 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const theme = useSelector((store) => {
 		return store.app.theme;
 	});
+	const sideBarIsOpen = useSelector((state) => {
+		return state.app.sideBar;
+	});
 
 	const sendMessage = (e) => {
 		//prevent refresh
@@ -42,7 +45,10 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
 
 	return (
 		<ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-			<ChatInputContainer key={channelName}>
+			<ChatInputContainer
+				key={channelName}
+				size={sideBarIsOpen ? "secondary" : "primary"}
+			>
 				<form action="">
 					<input
 						value={input}
@@ -102,7 +108,7 @@ const ChatInputContainer = styled.div`
 		font-weight: bold;
 
 		@media ${device.mobileXL} {
-			width: 30%;
+			width: ${(props) => (props.size == "secondary" ? "30%" : "60%")};
 		}
 
 		::-webkit-input-placeholder {

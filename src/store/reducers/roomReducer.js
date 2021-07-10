@@ -2,8 +2,6 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
 	roomId: null,
-	theme: "light",
-	sideBar: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,18 +10,6 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				roomId: action.value,
-			};
-
-		case actionTypes.TOGGLE_THEME:
-			return {
-				...state,
-				theme: state.theme === "light" ? "dark" : "light",
-			};
-
-		case actionTypes.TOGGLE_SIDEBAR:
-			return {
-				...state,
-				sideBar: !state.sideBar,
 			};
 
 		default:
