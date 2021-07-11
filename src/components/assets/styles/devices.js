@@ -1,5 +1,6 @@
 const size = {
-	mobileS: "320px",
+	mobileXS: "320px",
+	mobileS: "350px",
 	mobileM: "375px",
 	mobileL: "425px",
 	mobileXL: "560px",
@@ -10,6 +11,7 @@ const size = {
 };
 
 export default {
+	mobileXS: `(max-width: ${size.mobileXS})`,
 	mobileS: `(max-width: ${size.mobileS})`,
 	mobileM: `(max-width: ${size.mobileM})`,
 	mobileL: `(max-width: ${size.mobileL})`,

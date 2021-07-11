@@ -110,7 +110,6 @@ export default Header;
 const HeaderSearch = styled.div`
 	flex: 0.4;
 	justify-content: flex-start;
-
 	opacity: 1;
 	border-radius: 6px;
 	background-color: #421f44;
@@ -129,7 +128,6 @@ const HeaderSearch = styled.div`
 		background-color: transparent;
 		border: none;
 		text-align: start;
-		min-width: 10vw;
 		outline: none;
 		color: white;
 		font-family: inherit;
@@ -151,6 +149,9 @@ const HeaderSearch = styled.div`
 		:focus::-webkit-input-placeholder {
 			color: transparent;
 		}
+		@media ${device.mobileS} {
+			width: 10vw;
+		}
 	}
 `;
 const HeaderContainer = styled.div`
@@ -168,7 +169,7 @@ const HeaderLeft = styled.div`
 	flex: 0.3;
 	display: flex;
 	align-items: center;
-	margin-left: 19px;
+	margin-left: 5px;
 
 	> .MuiSvgIcon-root {
 		margin-left: auto;
