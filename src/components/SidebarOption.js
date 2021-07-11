@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { db } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../store/actions/index";
@@ -60,18 +60,6 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 };
 
 export default SidebarOption;
-
-const FadeAway = keyframes`
-	0% {
-		opacity: 1;
-	}
-	99% {
-		opacity: 0;
-	}
-	100% {
-		display: none;
-	}
-`;
 
 const SidebarOptionContainer = styled.div`
 	display: flex;

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Avatar } from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import SearchIcon from "@material-ui/icons/Search";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
-import { purple, green } from "@material-ui/core/colors";
+import { purple } from "@material-ui/core/colors";
 import { IconButton } from "@material-ui/core";
 import { lightTheme, darkTheme } from "./assets/styles/Themes";
 import { GlobalStyles } from "./assets/styles/globalStyles";
@@ -18,7 +18,7 @@ import Switch from "@material-ui/core/Switch";
 import device from "./assets/styles/devices";
 
 const Header = () => {
-	const [user, loading] = useAuthState(auth);
+	const [user] = useAuthState(auth);
 	const [sliderState, setSliderState] = useState(false);
 	const [input, setInput] = useState("");
 	const theme = useSelector((state) => state.app.theme);

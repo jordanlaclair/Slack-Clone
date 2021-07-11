@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
-import CreateIcon from "@material-ui/icons/Create";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
@@ -19,12 +18,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import device from "./assets/styles/devices";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import { IconButton } from "@material-ui/core";
-import devices from "./assets/styles/devices";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions/index";
 function Sidebar() {
 	const [channels, loading, error] = useCollection(db.collection("rooms"));
+	const [animationIsPlaying, setAnimationIsPlaying] = useState(false);
 	const [user] = useAuthState(auth);
 	const sideBarIsOpen = useSelector((state) => {
 		return state.app.sideBar;
@@ -33,10 +31,22 @@ function Sidebar() {
 	const toggleSideBar = () => {
 		if (!sideBarIsOpen) dispatch(action.toggleSideBar());
 	};
+
+	useEffect(() => {
+		console.log({ animationIsPlaying });
+	}, [animationIsPlaying]);
+
 	return (
 		<SidebarContainer
 			isOpen={sideBarIsOpen ? "true" : "false"}
 			onClick={toggleSideBar}
+			hideSideBar={animationIsPlaying ? "true" : "false"}
+			onAnimationStart={() => {
+				setAnimationIsPlaying(true);
+			}}
+			onTransitionEnd={() => {
+				setAnimationIsPlaying(false);
+			}}
 		>
 			{sideBarIsOpen ? (
 				<>
@@ -87,9 +97,18 @@ function Sidebar() {
 
 export default Sidebar;
 
-const closedStyle = css`
-	flex: 0.02;
+const fadeIn = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
 
+const closedStyle = css`
+	display: flex;
+	width: 35px;
 	cursor: pointer;
 	margin-top: 80px;
 	height: 15vh;
@@ -97,7 +116,6 @@ const closedStyle = css`
 	border-top-right-radius: 999px;
 	border: 1px solid gray;
 	border-left: 0px;
-	display: flex;
 
 	> div {
 		margin: 1.5px;
@@ -112,15 +130,12 @@ const closedStyle = css`
 
 const SidebarContainer = styled.div`
 	background-color: var(--slack-color);
-	transition: all 1s ease-in;
-	overflow-y: hidden !important;
-	color: white;
-	flex: 0.3;
-	margin-top: 60px;
-	@media ${device.mobileXL} {
-		min-width: 50%;
-	}
 
+	transition: all 1s ease-in-out;
+	color: white;
+	flex: ${(props) => (props.isOpen === "true" ? 0.3 : null)};
+	margin-top: 60px;
+	overflow-y: ${(props) => (props.hideSideBar === "true" ? "hidden" : "auto")};
 	border-top: 1px solid rgb(148, 148, 148);
 
 	> hr {
@@ -129,7 +144,14 @@ const SidebarContainer = styled.div`
 		border: 1px solid rgb(148, 148, 148);
 	}
 
-	${(props) => (props.isOpen == "false" ? closedStyle : null)}
+	${(props) => (props.isOpen === "false" ? closedStyle : openStyle)}
+`;
+
+const openStyle = css`
+	@media ${device.mobileXL} {
+		min-width: 50%;
+	}
+	animation: ${fadeIn} 2s;
 `;
 
 const SidebarHeader = styled.div`

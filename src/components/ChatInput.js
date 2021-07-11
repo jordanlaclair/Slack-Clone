@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
@@ -6,13 +6,12 @@ import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./assets/styles/Themes";
-import { useDispatch, useSelector } from "react-redux";
-import * as action from "../store/actions/index";
+import { useSelector } from "react-redux";
 import device from "./assets/styles/devices";
 
 const ChatInput = ({ channelName, channelId, chatRef }) => {
 	const [input, setInput] = useState("");
-	const [user, loading] = useAuthState(auth);
+	const [user] = useAuthState(auth);
 	const theme = useSelector((store) => {
 		return store.app.theme;
 	});
@@ -108,7 +107,7 @@ const ChatInputContainer = styled.div`
 		font-weight: bold;
 
 		@media ${device.mobileXL} {
-			width: ${(props) => (props.size == "secondary" ? "30%" : "60%")};
+			width: ${(props) => (props.size === "secondary" ? "30%" : "60%")};
 		}
 
 		::-webkit-input-placeholder {
