@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import CreateIcon from "@material-ui/icons/Create";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
@@ -30,64 +30,68 @@ function Sidebar() {
 		return state.app.sideBar;
 	});
 	const dispatch = useDispatch();
-	return sideBarIsOpen ? (
-		<SidebarContainerOpen>
-			<SidebarHeader>
-				<SidebarInfo>
-					<h2>Jordan's HQ</h2>
-					<h3>
-						<RadioButtonCheckedIcon />
-						{user?.displayName}
-					</h3>
-				</SidebarInfo>
-				<IconButton
-					onClick={() => {
-						dispatch(action.toggleSideBar());
-					}}
-				>
-					<NavigateBeforeIcon />
-				</IconButton>
-			</SidebarHeader>
-
-			<SidebarOption Icon={InsertCommentIcon} title="Threads" />
-			<SidebarOption Icon={InboxIcon} title="Mentions & reactions" />
-			<SidebarOption Icon={DraftsIcon} title="Saved Items" />
-			<SidebarOption Icon={BookmarkBorderIcon} title="Channel Browser" />
-			<SidebarOption Icon={PeopleAltIcon} title="People & User Groups" />
-			<SidebarOption Icon={AppsIcon} title="Apps" />
-			<SidebarOption Icon={FileCopyIcon} title="File Browser" />
-			<SidebarOption Icon={ExpandLessIcon} title="Show Less" />
-			<hr />
-			<SidebarOption Icon={ExpandMoreIcon} title="Channels" />
-			<hr />
-			<SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
-			{channels?.docs.map((doc) => {
-				return (
-					<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
-				);
-			})}
-		</SidebarContainerOpen>
-	) : (
-		<SidebarContainerClosed
-			onClick={() => {
-				dispatch(action.toggleSideBar());
-			}}
+	const toggleSideBar = () => {
+		if (!sideBarIsOpen) dispatch(action.toggleSideBar());
+	};
+	return (
+		<SidebarContainer
+			isOpen={sideBarIsOpen ? "true" : "false"}
+			onClick={toggleSideBar}
 		>
-			<div>&nbsp;</div>
-			<div>&nbsp;</div>
-		</SidebarContainerClosed>
+			{sideBarIsOpen ? (
+				<>
+					<SidebarHeader>
+						<SidebarInfo>
+							<h2>Jordan's HQ</h2>
+							<h3>
+								<RadioButtonCheckedIcon />
+								{user?.displayName}
+							</h3>
+						</SidebarInfo>
+						<IconButton
+							onClick={() => {
+								dispatch(action.toggleSideBar());
+							}}
+						>
+							<NavigateBeforeIcon />
+						</IconButton>
+					</SidebarHeader>
+
+					<SidebarOption Icon={InsertCommentIcon} title="Threads" />
+					<SidebarOption Icon={InboxIcon} title="Mentions & reactions" />
+					<SidebarOption Icon={DraftsIcon} title="Saved Items" />
+					<SidebarOption Icon={BookmarkBorderIcon} title="Channel Browser" />
+					<SidebarOption Icon={PeopleAltIcon} title="People & User Groups" />
+					<SidebarOption Icon={AppsIcon} title="Apps" />
+					<SidebarOption Icon={FileCopyIcon} title="File Browser" />
+					<SidebarOption Icon={ExpandLessIcon} title="Show Less" />
+					<hr />
+					<SidebarOption Icon={ExpandMoreIcon} title="Channels" />
+					<hr />
+					<SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
+					{channels?.docs.map((doc) => {
+						return (
+							<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+						);
+					})}
+				</>
+			) : (
+				<>
+					<div>&nbsp;</div>
+					<div>&nbsp;</div>
+				</>
+			)}
+		</SidebarContainer>
 	);
 }
 
 export default Sidebar;
 
-const SidebarContainerClosed = styled.div`
-	background-color: var(--slack-color);
+const closedStyle = css`
+	flex: 0.02;
+
 	cursor: pointer;
 	margin-top: 80px;
-	transition: all 1s ease-in;
-	display: block;
-	width: 25px;
 	height: 15vh;
 	border-bottom-right-radius: 999px;
 	border-top-right-radius: 999px;
@@ -106,9 +110,10 @@ const SidebarContainerClosed = styled.div`
 	}
 `;
 
-const SidebarContainerOpen = styled.div`
+const SidebarContainer = styled.div`
 	background-color: var(--slack-color);
 	transition: all 1s ease-in;
+	overflow-y: hidden !important;
 	color: white;
 	flex: 0.3;
 	margin-top: 60px;
@@ -123,7 +128,8 @@ const SidebarContainerOpen = styled.div`
 		margin-bottom: 10px;
 		border: 1px solid rgb(148, 148, 148);
 	}
-	overflow-y: auto;
+
+	${(props) => (props.isOpen == "false" ? closedStyle : null)}
 `;
 
 const SidebarHeader = styled.div`

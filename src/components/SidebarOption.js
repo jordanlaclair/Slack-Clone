@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { db } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../store/actions/index";
@@ -8,6 +8,9 @@ import device from "./assets/styles/devices";
 
 const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 	const dispatch = useDispatch();
+	const sideBarIsOpen = useSelector((state) => {
+		return state.app.sideBar;
+	});
 	const selectChannel = () => {
 		if (id) {
 			dispatch(action.enterRoom(id));
@@ -37,6 +40,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 	return (
 		<SidebarOptionContainer
 			onClick={addChannelOption ? addChannel : selectChannel}
+			isOpen={sideBarIsOpen ? "true" : "false"}
 		>
 			{" "}
 			<IconButton style={optionStyle} color="inherit">
@@ -56,6 +60,18 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 };
 
 export default SidebarOption;
+
+const FadeAway = keyframes`
+	0% {
+		opacity: 1;
+	}
+	99% {
+		opacity: 0;
+	}
+	100% {
+		display: none;
+	}
+`;
 
 const SidebarOptionContainer = styled.div`
 	display: flex;
