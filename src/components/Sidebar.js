@@ -32,20 +32,20 @@ function Sidebar() {
 		if (!sideBarIsOpen) dispatch(action.toggleSideBar());
 	};
 
-	useEffect(() => {
-		console.log({ animationIsPlaying });
-	}, [animationIsPlaying]);
-
 	return (
 		<SidebarContainer
 			isOpen={sideBarIsOpen ? "true" : "false"}
 			onClick={toggleSideBar}
 			hideSideBar={animationIsPlaying ? "true" : "false"}
-			onAnimationStart={() => {
+			onAnimationStart={(e) => {
 				setAnimationIsPlaying(true);
+				e.stopPropagation();
+				e.preventDefault();
 			}}
-			onTransitionEnd={() => {
+			onTransitionEnd={(e) => {
 				setAnimationIsPlaying(false);
+				e.stopPropagation();
+				e.preventDefault();
 			}}
 		>
 			{sideBarIsOpen ? (
@@ -97,15 +97,6 @@ function Sidebar() {
 
 export default Sidebar;
 
-const fadeIn = keyframes`
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-`;
-
 const closedStyle = css`
 	display: flex;
 	width: 35px;
@@ -151,7 +142,6 @@ const openStyle = css`
 	@media ${device.mobileXL} {
 		min-width: 50%;
 	}
-	animation: ${fadeIn} 2s;
 `;
 
 const SidebarHeader = styled.div`

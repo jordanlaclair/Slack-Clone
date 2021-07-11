@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { db } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../store/actions/index";
@@ -11,13 +11,13 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 	const sideBarIsOpen = useSelector((state) => {
 		return state.app.sideBar;
 	});
-	const selectChannel = () => {
+	const selectChannel = (e) => {
 		if (id) {
 			dispatch(action.enterRoom(id));
 		}
 	};
 
-	const addChannel = () => {
+	const addChannel = (e) => {
 		const channelName = prompt("Please enter the channel name");
 		if (channelName) {
 			db.collection("rooms").add({
@@ -26,35 +26,27 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 		}
 	};
 
-	const optionStyle = {
-		display: "flex",
-		justifyContent: "flex-start",
-		fontWeight: 500,
-		paddingLeft: "10px",
-		fontSize: "inherit",
-		width: "100%",
-		borderRadius: "0px",
-		padding: "inherit",
-	};
+	const optionStyle = {};
 
+	const toggle = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+	};
 	return (
 		<SidebarOptionContainer
 			onClick={addChannelOption ? addChannel : selectChannel}
 			isOpen={sideBarIsOpen ? "true" : "false"}
 		>
-			{" "}
-			<IconButton style={optionStyle} color="inherit">
-				{Icon ? (
-					<>
-						<Icon style={{ padding: "inherit", paddingRight: "5px" }} />{" "}
-						<h3>{title}</h3>{" "}
-					</>
-				) : (
-					<SidebarOptionChannel>
-						<span>#</span> {title}
-					</SidebarOptionChannel>
-				)}
-			</IconButton>
+			{Icon ? (
+				<>
+					<Icon style={{ padding: "inherit", paddingRight: "8px" }} />{" "}
+					<h3>{title}</h3>{" "}
+				</>
+			) : (
+				<SidebarOptionChannel>
+					<span>#</span> {title}
+				</SidebarOptionChannel>
+			)}
 		</SidebarOptionContainer>
 	);
 };
@@ -67,7 +59,7 @@ const SidebarOptionContainer = styled.div`
 	align-items: center;
 	cursor: pointer;
 	transition: all 0.5s linear;
-	padding: 8px;
+	padding: 6px;
 
 	@media ${device.mobileXL} {
 		font-size: 8px;
@@ -88,12 +80,23 @@ const SidebarOptionContainer = styled.div`
 	}
 
 	> .MuiSvgIcon-root {
-		font-size: 12px !important;
-		font-weight: 500 !important;
-		padding-left: 2px !important;
+		font-weight: 500;
+		font-size: 30px;
+	}
+
+	${(props) => (props.isOpen === "false" ? null : openStyle)}
+`;
+const fadeIn = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
 	}
 `;
-
+const openStyle = css`
+	animation: ${fadeIn} 3s;
+`;
 const SidebarOptionChannel = styled.h3`
 	padding: 2px 2px;
 	font-weight: 300;
