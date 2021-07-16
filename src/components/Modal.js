@@ -45,13 +45,17 @@ export default Modal;
 
 const ModalContainer = styled.div`
 	position: fixed;
+	width: 500px;
 	top: 20%;
 	left: 50%;
+	transform: translate(-50%, -50%);
+
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 	align-items: center;
 	padding: 20px;
+	border-radius: 10px;
 
 	color: ${(props) => (props.theme == lightTheme ? "FFF" : props.theme.text)};
 	background: ${(props) =>
