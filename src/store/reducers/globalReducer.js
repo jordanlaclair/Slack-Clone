@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
 	theme: "light",
 	sideBar: true,
+	showModal: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -17,6 +18,18 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				sideBar: !state.sideBar,
+			};
+
+		case actionTypes.SHOW_MODAL:
+			return {
+				...state,
+				showModal: true,
+			};
+
+		case actionTypes.CLOSE_MODAL:
+			return {
+				...state,
+				showModal: false,
 			};
 
 		default:

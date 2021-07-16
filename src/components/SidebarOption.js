@@ -1,40 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { db } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../store/actions/index";
-import { IconButton } from "@material-ui/core";
 import device from "./assets/styles/devices";
+import Modal from "./Modal";
 
 const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 	const dispatch = useDispatch();
-	const sideBarIsOpen = useSelector((state) => {
-		return state.app.sideBar;
-	});
+	const showModal = useSelector((state) => state.app.showModal);
+
+	const sideBarIsOpen = useSelector((state) => state.app.sideBar);
 	const selectChannel = (e) => {
 		if (id) {
 			dispatch(action.enterRoom(id));
 		}
 	};
 
-	const addChannel = (e) => {
-		const channelName = prompt("Please enter the channel name");
-		if (channelName) {
-			db.collection("rooms").add({
-				name: channelName,
-			});
-		}
+	const showModalFunc = (e) => {
+		dispatch(action.showModal());
 	};
 
-	const optionStyle = {};
-
-	const toggle = (e) => {
-		e.preventDefault();
-		e.stopPropagation();
-	};
 	return (
 		<SidebarOptionContainer
-			onClick={addChannelOption ? addChannel : selectChannel}
+			onClick={addChannelOption ? showModalFunc : selectChannel}
 			isOpen={sideBarIsOpen ? "true" : "false"}
 		>
 			{Icon ? (
@@ -47,6 +36,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 					<span>#</span> {title}
 				</SidebarOptionChannel>
 			)}
+			{showModal ? <Modal /> : null}
 		</SidebarOptionContainer>
 	);
 };

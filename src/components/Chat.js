@@ -49,19 +49,23 @@ const Chat = () => {
 						</HeaderRight>
 					</Header>
 					<ChatMessages>
-						{roomMessages?.docs.map((doc) => {
-							const { message, timestamp, user, userImage } = doc.data();
+						{roomMessages.docs.length == 0 ? (
+							<NoMessages>Be the first to send a message!</NoMessages>
+						) : (
+							roomMessages?.docs.map((doc) => {
+								const { message, timestamp, user, userImage } = doc.data();
 
-							return (
-								<Message
-									key={doc.id}
-									message={message}
-									timestamp={timestamp}
-									user={user}
-									userImage={userImage}
-								/>
-							);
-						})}
+								return (
+									<Message
+										key={doc.id}
+										message={message}
+										timestamp={timestamp}
+										user={user}
+										userImage={userImage}
+									/>
+								);
+							})
+						)}
 						<ChatBottom ref={chatRef} />
 					</ChatMessages>
 
@@ -234,7 +238,11 @@ const HomePageContainer = styled.div`
 	margin-top: 30px;
 	animation: ${fadeIn} 1s linear;
 `;
-
+const NoMessages = styled.div`
+	margin-left: 10px;
+	padding: 10px;
+	font-size: 1rem;
+`;
 const HomePageContents = styled.div`
 	font-size: 2rem;
 	text-align: center;

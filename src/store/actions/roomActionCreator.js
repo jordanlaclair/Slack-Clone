@@ -18,3 +18,15 @@ export const toggleSideBar = () => {
 		type: actionTypes.TOGGLE_SIDEBAR,
 	};
 };
+
+export const showModal = () => {
+	return {
+		type: actionTypes.SHOW_MODAL,
+	};
+};
+
+export const closeModal = () => {
+	return {
+		type: actionTypes.CLOSE_MODAL,
+	};
+};
