@@ -5,6 +5,8 @@ import styled, { keyframes, ThemeProvider } from "styled-components";
 import { db } from "../firebase";
 import * as action from "../store/actions/index";
 import { darkTheme, lightTheme } from "./assets/styles/Themes";
+import CloseIcon from "@material-ui/icons/Close";
+import devices from "./assets/styles/devices";
 
 const Modal = () => {
 	const theme = useSelector((state) => state.app.theme);
@@ -31,7 +33,15 @@ const Modal = () => {
 		<ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
 			<ModalWrapper>
 				<ModalContainer>
-					<h2>Please enter the channel name: </h2>
+					<FormTop>
+						<h3>Please enter the channel name: </h3>
+						<CloseIcon
+							onClick={() => {
+								handleClose();
+							}}
+						/>
+					</FormTop>
+					<hr />
 					<form action="">
 						<input
 							type="text"
@@ -48,7 +58,7 @@ const Modal = () => {
 									handleClose();
 								}}
 							>
-								Close
+								<h4>Close</h4>
 							</Button1>
 							<Button2
 								type="submit"
@@ -56,7 +66,7 @@ const Modal = () => {
 									handleSubmit(e);
 								}}
 							>
-								Submit
+								<h4>Submit</h4>
 							</Button2>
 						</FormBottom>
 					</form>
@@ -76,6 +86,17 @@ const fadeIn = keyframes`
 		opacity: 1;
 	}
 `;
+const FormTop = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+
+	.MuiSvgIcon-root {
+		font-size: 2.5rem;
+		cursor: pointer;
+	}
+`;
 
 const FormBottom = styled.div`
 	display: flex;
@@ -87,10 +108,31 @@ const FormBottom = styled.div`
 
 const Button1 = styled.button`
 	margin: 4px;
+	font-family: inherit;
+	padding: 5px 10px;
+	outline: none;
+	color: ${(props) => props.theme.text};
+	background: ${(props) => props.theme.secondary};
+	cursor: pointer;
+	border-radius: 5px;
+	:hover {
+		background: ${(props) => props.theme.hover};
+	}
 `;
 
 const Button2 = styled.button`
 	margin: 4px;
+	font-family: inherit;
+	padding: 5px 10px;
+	outline: none;
+	color: ${(props) => props.theme.text};
+	background: ${(props) => props.theme.secondary};
+	cursor: pointer;
+	border-radius: 5px;
+
+	:hover {
+		background: ${(props) => props.theme.hover};
+	}
 `;
 
 const ModalContainer = styled.div`
@@ -98,7 +140,7 @@ const ModalContainer = styled.div`
 	cursor: default !important;
 	width: 500px;
 	z-index: 101 !important;
-	top: 20%;
+	top: 10rem;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	display: flex;
@@ -106,12 +148,16 @@ const ModalContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 20px;
+	padding: 23px;
 	border-radius: 10px;
 	color: ${(props) => (props.theme == lightTheme ? "FFF" : props.theme.text)};
 	background: ${(props) =>
 		props.theme == lightTheme ? "#3F0F40" : props.theme.secondary};
 
+	> hr {
+		width: 100%;
+		margin: 1rem 0px;
+	}
 	> form {
 		display: flex;
 		flex-direction: column;
@@ -129,7 +175,7 @@ const ModalContainer = styled.div`
 		background: ${(props) => props.theme.secondary};
 		border: 1px solid gray;
 		border-radius: 20px;
-		padding: 19px;
+		padding: 18px;
 		animation: ${fadeIn} 1s 1;
 		font-family: inherit;
 		font-weight: bold;
@@ -154,6 +200,18 @@ const ModalContainer = styled.div`
 			opacity: 0.7;
 			color: transparent;
 		}
+	}
+
+	@media ${devices.mobileXL} {
+		width: 350px;
+		font-size: smaller;
+	}
+
+	@media ${devices.mobileM} {
+		width: 300px;
+	}
+	@media ${devices.mobileXS} {
+		width: 220px;
 	}
 `;
 

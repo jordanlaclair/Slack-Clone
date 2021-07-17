@@ -139,7 +139,7 @@ const SidebarContainer = styled.div`
 `;
 
 const openStyle = css`
-	@media ${device.mobileXL} {
+	@media screen and (max-width: 640px) {
 		min-width: 50%;
 	}
 `;
