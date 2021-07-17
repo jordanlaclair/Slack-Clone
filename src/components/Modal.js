@@ -11,6 +11,7 @@ import { Button } from "@material-ui/core";
 
 const Modal = () => {
 	const theme = useSelector((state) => state.app.theme);
+	const [outsideModalClick, setOutsideModalClick] = useState(false);
 	const [channelName, setChannelName] = useState("");
 
 	const handleClose = () => {
@@ -18,7 +19,6 @@ const Modal = () => {
 	};
 
 	const handleSubmit = (e) => {
-		console.log("here");
 		e.preventDefault();
 		if (channelName) {
 			db.collection("rooms").add({
@@ -159,7 +159,7 @@ const ButtonComponent = styled.button`
 `;
 
 const ModalContainer = styled.div`
-	position: absolute;
+	position: fixed;
 	cursor: default !important;
 	width: 500px;
 	z-index: 101 !important;
@@ -167,6 +167,8 @@ const ModalContainer = styled.div`
 	left: 50%;
 	/* transform: translate(-50%, -50%); */
 	display: flex;
+	-webkit-box-shadow: 2px 2px 5px 2px #3f0f40;
+	box-shadow: 2px 2px 3px 2px #3f0f40;
 
 	animation: ${slideDown} 1s ease 1 forwards;
 	opacity: initial;
