@@ -112,14 +112,17 @@ const ChatInputContainer = styled.div`
 
 		::-webkit-input-placeholder {
 			color: ${(props) => props.theme.text};
+			opacity: 0.7;
 			transition: all 1s ease-out;
 		}
 		::-moz-placeholder {
 			color: ${(props) => props.theme.text};
+			opacity: 0.7;
 			transition: all 1s ease-out;
 		}
 		:-ms-input-placeholder {
 			color: ${(props) => props.theme.text};
+			opacity: 0.7;
 			transition: all 1s ease-out;
 		}
 

@@ -22,22 +22,24 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
 	};
 
 	return (
-		<SidebarOptionContainer
-			onClick={addChannelOption ? showModalFunc : selectChannel}
-			isOpen={sideBarIsOpen ? "true" : "false"}
-		>
-			{Icon ? (
-				<>
-					<Icon style={{ padding: "inherit", paddingRight: "8px" }} />{" "}
-					<h3>{title}</h3>{" "}
-				</>
-			) : (
-				<SidebarOptionChannel>
-					<span>#</span> {title}
-				</SidebarOptionChannel>
-			)}
+		<>
+			<SidebarOptionContainer
+				onClick={addChannelOption ? showModalFunc : selectChannel}
+				isOpen={sideBarIsOpen ? "true" : "false"}
+			>
+				{Icon ? (
+					<>
+						<Icon style={{ padding: "inherit", paddingRight: "8px" }} />{" "}
+						<h3>{title}</h3>{" "}
+					</>
+				) : (
+					<SidebarOptionChannel>
+						<span>#</span> {title}
+					</SidebarOptionChannel>
+				)}
+			</SidebarOptionContainer>
 			{showModal ? <Modal /> : null}
-		</SidebarOptionContainer>
+		</>
 	);
 };
 
