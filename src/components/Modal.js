@@ -7,6 +7,7 @@ import * as action from "../store/actions/index";
 import { darkTheme, lightTheme } from "./assets/styles/Themes";
 import CloseIcon from "@material-ui/icons/Close";
 import devices from "./assets/styles/devices";
+import { Button } from "@material-ui/core";
 
 const Modal = () => {
 	const theme = useSelector((state) => state.app.theme);
@@ -17,6 +18,7 @@ const Modal = () => {
 	};
 
 	const handleSubmit = (e) => {
+		console.log("here");
 		e.preventDefault();
 		if (channelName) {
 			db.collection("rooms").add({
@@ -45,6 +47,7 @@ const Modal = () => {
 					<form action="">
 						<input
 							type="text"
+							name="input"
 							value={channelName}
 							required
 							placeholder="Enter here"
@@ -52,22 +55,32 @@ const Modal = () => {
 								setChannelName(e.target.value);
 							}}
 						/>
+						<Button
+							hidden
+							type="submit"
+							name="submit_channel"
+							onClick={(e) => {
+								handleSubmit(e);
+							}}
+						>
+							SEND
+						</Button>
 						<FormBottom>
-							<Button1
+							<ButtonComponent
 								onClick={() => {
 									handleClose();
 								}}
 							>
 								<h4>Close</h4>
-							</Button1>
-							<Button2
+							</ButtonComponent>
+							<ButtonComponent
 								type="submit"
 								onClick={(e) => {
 									handleSubmit(e);
 								}}
 							>
 								<h4>Submit</h4>
-							</Button2>
+							</ButtonComponent>
 						</FormBottom>
 					</form>
 				</ModalContainer>
@@ -86,6 +99,29 @@ const fadeIn = keyframes`
 		opacity: 1;
 	}
 `;
+
+const slideDown = keyframes`
+	0% {
+		transform: translate(-50%, -100%);
+
+	}
+	50%{
+		transform: translate(-50%, -22%);
+	}
+	65%{
+		transform: translate(-50%, -34%);
+	}
+	80%{
+		transform: translate(-50%, -26%);
+	}
+	95%{
+		transform: translate(-50%, -32%);
+	}			
+	100% {
+		transform: translate(-50%, -30%);
+	}
+`;
+
 const FormTop = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -106,7 +142,7 @@ const FormBottom = styled.div`
 	margin-top: 15px;
 `;
 
-const Button1 = styled.button`
+const ButtonComponent = styled.button`
 	margin: 4px;
 	font-family: inherit;
 	padding: 5px 10px;
@@ -115,20 +151,7 @@ const Button1 = styled.button`
 	background: ${(props) => props.theme.secondary};
 	cursor: pointer;
 	border-radius: 5px;
-	:hover {
-		background: ${(props) => props.theme.hover};
-	}
-`;
-
-const Button2 = styled.button`
-	margin: 4px;
-	font-family: inherit;
-	padding: 5px 10px;
-	outline: none;
-	color: ${(props) => props.theme.text};
-	background: ${(props) => props.theme.secondary};
-	cursor: pointer;
-	border-radius: 5px;
+	border: 2px solid whitesmoke;
 
 	:hover {
 		background: ${(props) => props.theme.hover};
@@ -142,8 +165,10 @@ const ModalContainer = styled.div`
 	z-index: 101 !important;
 	top: 10rem;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	/* transform: translate(-50%, -50%); */
 	display: flex;
+
+	animation: ${slideDown} 1s ease 1 forwards;
 	opacity: initial;
 	flex-direction: column;
 	justify-content: center;
@@ -167,6 +192,10 @@ const ModalContainer = styled.div`
 		width: 80%;
 	}
 
+	> form > button {
+		display: none !important;
+	}
+
 	> form > input {
 		opacity: unset;
 		outline: none;
@@ -182,22 +211,22 @@ const ModalContainer = styled.div`
 
 		::-webkit-input-placeholder {
 			color: ${(props) => props.theme.text};
-			opacity: 0.7;
+			opacity: 0.5;
 			transition: all 1s ease-out;
 		}
 		::-moz-placeholder {
 			color: ${(props) => props.theme.text};
-			opacity: 0.7;
+			opacity: 0.5;
 			transition: all 1s ease-out;
 		}
 		:-ms-input-placeholder {
 			color: ${(props) => props.theme.text};
-			opacity: 0.7;
+			opacity: 0.5;
 			transition: all 1s ease-out;
 		}
 
 		:focus::-webkit-input-placeholder {
-			opacity: 0.7;
+			opacity: 0.5;
 			color: transparent;
 		}
 	}

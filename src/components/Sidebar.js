@@ -15,10 +15,10 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, db } from "../firebase";
 import SidebarOption from "./SidebarOption";
 import { useAuthState } from "react-firebase-hooks/auth";
-import device from "./assets/styles/devices";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import { IconButton } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import * as action from "../store/actions/index";
 function Sidebar() {
 	const [channels, loading, error] = useCollection(db.collection("rooms"));
@@ -54,7 +54,7 @@ function Sidebar() {
 						<SidebarInfo>
 							<h2>Jordan's HQ</h2>
 							<h3>
-								<RadioButtonCheckedIcon />
+								<FiberManualRecordIcon />
 								{user?.displayName}
 							</h3>
 						</SidebarInfo>

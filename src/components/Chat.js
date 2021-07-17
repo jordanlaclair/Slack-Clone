@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import devices from "./assets/styles/devices.js";
 
 const Chat = () => {
 	const chatRef = useRef(null);
@@ -247,6 +248,10 @@ const HomePageContents = styled.div`
 	font-size: 2rem;
 	text-align: center;
 	margin-top: 30px;
+
+	@media screen and (max-width: 760px) {
+		font-size: 1.5rem;
+	}
 
 	> svg {
 		object-fit: contain;
