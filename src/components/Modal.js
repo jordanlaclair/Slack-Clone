@@ -29,37 +29,39 @@ const Modal = () => {
 
 	return (
 		<ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-			<ModalContainer>
-				<h2>Please enter the channel name: </h2>
-				<form action="">
-					<input
-						type="text"
-						value={channelName}
-						required
-						placeholder="Enter here"
-						onChange={(e) => {
-							setChannelName(e.target.value);
-						}}
-					/>
-					<FormBottom>
-						<Button1
-							onClick={() => {
-								handleClose();
+			<ModalWrapper>
+				<ModalContainer>
+					<h2>Please enter the channel name: </h2>
+					<form action="">
+						<input
+							type="text"
+							value={channelName}
+							required
+							placeholder="Enter here"
+							onChange={(e) => {
+								setChannelName(e.target.value);
 							}}
-						>
-							Close
-						</Button1>
-						<Button2
-							type="submit"
-							onClick={(e) => {
-								handleSubmit(e);
-							}}
-						>
-							Submit
-						</Button2>
-					</FormBottom>
-				</form>
-			</ModalContainer>
+						/>
+						<FormBottom>
+							<Button1
+								onClick={() => {
+									handleClose();
+								}}
+							>
+								Close
+							</Button1>
+							<Button2
+								type="submit"
+								onClick={(e) => {
+									handleSubmit(e);
+								}}
+							>
+								Submit
+							</Button2>
+						</FormBottom>
+					</form>
+				</ModalContainer>
+			</ModalWrapper>
 		</ThemeProvider>
 	);
 };
@@ -92,14 +94,15 @@ const Button2 = styled.button`
 `;
 
 const ModalContainer = styled.div`
-	position: fixed;
+	position: absolute;
 	cursor: default !important;
-	z-index: 50;
 	width: 500px;
+	z-index: 101 !important;
 	top: 20%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	display: flex;
+	opacity: initial;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -119,6 +122,7 @@ const ModalContainer = styled.div`
 	}
 
 	> form > input {
+		opacity: unset;
 		outline: none;
 		width: 80%;
 		color: ${(props) => props.theme.text};
@@ -150,5 +154,19 @@ const ModalContainer = styled.div`
 			opacity: 0.7;
 			color: transparent;
 		}
+	}
+`;
+
+const ModalWrapper = styled.div`
+	:before {
+		content: "";
+		position: fixed;
+		top: 0px;
+		z-index: 100 !important;
+		left: 0px;
+		background-color: ${(props) => props.theme.accent};
+		opacity: 0.1;
+		width: 100vw;
+		height: 100vh;
 	}
 `;
