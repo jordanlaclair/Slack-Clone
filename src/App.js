@@ -11,6 +11,12 @@ import Spinner from "react-spinkit";
 
 function App() {
 	const [user, loading] = useAuthState(auth);
+	const appHeight = () => {
+		const doc = document.documentElement;
+		doc.style.setProperty("--app-height", `${window.innerHeight}px`);
+	};
+	window.addEventListener("resize", appHeight);
+	appHeight();
 
 	if (loading) {
 		return (
@@ -51,18 +57,23 @@ export default App;
 
 const AppBody = styled.div`
 	display: flex;
-	height: 100vh;
+	height: 100%;
 `;
 
 const AppLoading = styled.div`
-	display: grid;
-	height: 100vh;
-	place-items: center;
-	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+	overflow: hidden !important;
 `;
 
 const AppLoadingContents = styled.div`
+	position: relative;
 	text-align: center;
+	overflow: hidden !important;
+
 	padding-bottom: 100px;
 	display: flex;
 	flex-direction: column;

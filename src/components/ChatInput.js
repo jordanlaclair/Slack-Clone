@@ -48,7 +48,12 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
 				key={channelName}
 				size={sideBarIsOpen ? "secondary" : "primary"}
 			>
-				<form action="">
+				<form
+					onSubmit={(e) => {
+						sendMessage(e);
+					}}
+					action=""
+				>
 					<input
 						value={input}
 						onChange={(e) => {

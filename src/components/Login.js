@@ -35,7 +35,8 @@ export default Login;
 
 const LoginContainer = styled.div`
 	background-color: #f8f8f8;
-	height: 100vh;
+
+	height: 100%;
 	display: grid;
 	place-items: center;
 `;

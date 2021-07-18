@@ -102,7 +102,7 @@ const closedStyle = css`
 	width: 35px;
 	cursor: pointer;
 	margin-top: 80px;
-	height: 15vh;
+	height: 15%;
 	border-bottom-right-radius: 999px;
 	border-top-right-radius: 999px;
 	border: 1px solid gray;
@@ -123,11 +123,11 @@ const SidebarContainer = styled.div`
 	background-color: var(--slack-color);
 
 	transition: all 1s ease-in-out;
+
 	color: white;
 	flex: ${(props) => (props.isOpen === "true" ? 0.3 : null)};
 	margin-top: 60px;
 	overflow-y: ${(props) => (props.hideSideBar === "true" ? "hidden" : "auto")};
-	border-top: 1px solid rgb(148, 148, 148);
 
 	> hr {
 		margin-top: 10px;

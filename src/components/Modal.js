@@ -148,7 +148,7 @@ const ButtonComponent = styled.button`
 	padding: 5px 10px;
 	outline: none;
 	color: ${(props) => props.theme.text};
-	background: ${(props) => props.theme.secondary};
+	background: ${(props) => (props.theme == lightTheme ? "white" : "#3F0F40")};
 	cursor: pointer;
 	border-radius: 5px;
 	border: 2px solid whitesmoke;
@@ -177,7 +177,6 @@ const ModalContainer = styled.div`
 	align-items: center;
 	padding: 23px;
 	border-radius: 10px;
-	color: ${(props) => (props.theme == lightTheme ? "FFF" : props.theme.text)};
 	background: ${(props) =>
 		props.theme == lightTheme ? "#3F0F40" : props.theme.secondary};
 
@@ -247,6 +246,7 @@ const ModalContainer = styled.div`
 `;
 
 const ModalWrapper = styled.div`
+	position: fixed;
 	:before {
 		content: "";
 		position: fixed;
